@@ -8,6 +8,8 @@
 #include <QColorDialog>
 #include <QMouseEvent>
 #include <QList>
+#include <QSet>
+#include <QMessageBox>
 SettingScene::SettingScene(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SettingScene)
@@ -21,6 +23,10 @@ SettingScene::SettingScene(QWidget *parent) :
     move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
 
     connect(ui->settingBackBtn,&QPushButton::clicked,this,[=](){
+        if(keyRepetition()){
+            QMessageBox::critical(parent,"错误","键位重复!");
+            return ;
+        }
         saveSettingToDatabase();
         ui->tryListeningBtn->setText("试听");
         mediaPlayer->stop();
@@ -64,7 +70,7 @@ SettingScene::SettingScene(QWidget *parent) :
 }
 
 void SettingScene::init(){
-    qDebug()<<"init";
+
     ui->widthOptionBlock->setText("棋盘宽度");
     ui->widthOptionBlock->setlimit(15,5);
     ui->widthOptionBlock->setstep(1);
@@ -223,9 +229,16 @@ void SettingScene::saveSettingToDatabase(){
     cnt=0;
     for(auto i:keyOptionBlk_Vector){
         KEYSETTING[cnt]=i->getKey();
-        qDebug()<<KEYSETTING[cnt];
         ++cnt;
     }
+}
+
+bool SettingScene::keyRepetition(){
+    QSet<Qt::Key> tem_set;
+    for(auto i:keyOptionBlk_Vector){
+        tem_set.insert(i->getKey());
+    }
+    return tem_set.size()<5;
 }
 
 SettingScene::~SettingScene()

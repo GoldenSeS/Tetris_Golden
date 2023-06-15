@@ -30,6 +30,8 @@ private:
     QVector<colorOptionBlock*> colorOptionBlk_Vector;
     QVector<keyOptionBlock*> keyOptionBlk_Vector;
 
+    bool keyRepetition();
+
     void disableMouseClick(QWidget *widget);
     void enableMouseClick(QWidget *widget);
 
