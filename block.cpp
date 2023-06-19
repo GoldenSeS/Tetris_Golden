@@ -3,7 +3,7 @@
 Block::Block()
 {
     this->block_pos.setX(GAME_WIDTH/2);
-    this->block_pos.setY(1);
+    this->block_pos.setY(2);
     block_status=0;
 }
 

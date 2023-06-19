@@ -10,19 +10,27 @@
 #include <QList>
 #include <QSet>
 #include <QMessageBox>
+#include <QInputDialog>
+#include <QLineEdit>
+#include "profilemanager.h"
 SettingScene::SettingScene(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::SettingScene)
 {
     ui->setupUi(this);
     this->setWindowTitle(QString("TetrisSettingScene"));
+    this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
     this->setFixedSize(800,1000);
-
+    ui->tabWidget->setCurrentIndex(0);
+    ui->currentUserLabel->setWordWrap(true);
+    ui->currentUserLabel->setText("当前用户：\n");
     //窗口放置在屏幕正中央
     QDesktopWidget *desktop = QApplication::desktop();
     move((desktop->width()-this->width())/2,(desktop->height()-this->height())/2);
 
+    //返回按钮
     connect(ui->settingBackBtn,&QPushButton::clicked,this,[=](){
+        //防止键位重复
         if(keyRepetition()){
             QMessageBox::critical(parent,"错误","键位重复!");
             return ;
@@ -33,8 +41,19 @@ SettingScene::SettingScene(QWidget *parent) :
         emit settingSceneBack();
     });
 
+    //重置选项按钮
     connect(ui->resetBtn,&QPushButton::clicked,this,[=](){
         setNumFromDefault();
+    });
+
+    //创建新用户按钮
+    connect(ui->selectUserComboBox,&QComboBox::currentTextChanged,[=](){
+        ui->currentUserLabel->setText("当前用户：\n"+ui->selectUserComboBox->currentText());
+    });
+
+    connect(ui->clearUserBtn,&QPushButton::clicked,this,[=](){
+        fm.clearProfiles();
+        ui->selectUserComboBox->clear();
     });
 
     mediaPlayer = new QMediaPlayer;
@@ -65,6 +84,11 @@ SettingScene::SettingScene(QWidget *parent) :
         mediaPlayer->setVolume(ui->mediaOptionBlock->getNum());
     });
 
+    // 连接添加新用户到存档
+    connect(ui->newUserBtn, &QPushButton::clicked, [&]() {
+        addNewProfile();
+    });
+
     init();
     setNumFromDatabase();
 }
@@ -72,11 +96,11 @@ SettingScene::SettingScene(QWidget *parent) :
 void SettingScene::init(){
 
     ui->widthOptionBlock->setText("棋盘宽度");
-    ui->widthOptionBlock->setlimit(15,5);
+    ui->widthOptionBlock->setlimit(10,5);
     ui->widthOptionBlock->setstep(1);
 
     ui->heightOptionBlock->setText("棋盘高度");
-    ui->heightOptionBlock->setlimit(25,10);
+    ui->heightOptionBlock->setlimit(20,10);
     ui->heightOptionBlock->setstep(1);
 
     ui->fallingOptionBlock->setText("游戏速度");
@@ -231,6 +255,10 @@ void SettingScene::saveSettingToDatabase(){
         KEYSETTING[cnt]=i->getKey();
         ++cnt;
     }
+
+    USER_ID = ui->selectUserComboBox->currentIndex();
+
+    debugDatabase();
 }
 
 bool SettingScene::keyRepetition(){
@@ -239,6 +267,25 @@ bool SettingScene::keyRepetition(){
         tem_set.insert(i->getKey());
     }
     return tem_set.size()<5;
+}
+
+void SettingScene::addNewProfile(){
+    QString name = QInputDialog::getText(this,"新用户","请输入新用户昵称:", QLineEdit::Normal,"admin");
+    if(name.size()>=10||name.size()<1){
+        QMessageBox::critical(this,"错误","字数限制(<10)!");
+        return;
+    }
+    for(auto i:fm.getAllUserProfiles()){
+        if(i->getUserName()==name){
+            QMessageBox::critical(this,"错误","昵称已被占用");
+            return;
+        }
+    }
+    UserProfile* temp = new UserProfile(fm.getProfilesNum(),name);
+    fm.addUserProfile(temp);
+    ui->selectUserComboBox->addItem(name);
+    ui->selectUserComboBox->setCurrentIndex(fm.getProfilesNum()-1);
+//    fm.debugProfilesOutput();
 }
 
 SettingScene::~SettingScene()

@@ -16,8 +16,14 @@ public:
     QList<UserProfile*> getAllUserProfiles();
     void saveProfilesToFile(const QString& fileName) const;
     void loadProfilesFromFile(const QString& fileName);
-
+    void addRecordFromUserProfileIndex(int index,Record record);
+    int getProfilesNum() const;
+    void debugProfilesOutput();
+    void clearProfiles();
 private:
     QMap<int, UserProfile*> userProfiles;
 };
+
+extern ProfileManager fm;
+
 #endif // PROFILEMANAGER_H

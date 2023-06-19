@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -60,6 +61,10 @@ public:
     keyOptionBlock *spin_keyOptionBlock;
     keyOptionBlock *pause_keyOptionBlock;
     QWidget *profileTab;
+    QLabel *currentUserLabel;
+    QComboBox *selectUserComboBox;
+    QPushButton *newUserBtn;
+    QPushButton *clearUserBtn;
     QLabel *label;
 
     void setupUi(QWidget *SettingScene)
@@ -290,18 +295,33 @@ public:
         tabWidget->addTab(keyboardTab, QString());
         profileTab = new QWidget();
         profileTab->setObjectName(QString::fromUtf8("profileTab"));
+        currentUserLabel = new QLabel(profileTab);
+        currentUserLabel->setObjectName(QString::fromUtf8("currentUserLabel"));
+        currentUserLabel->setGeometry(QRect(60, 60, 371, 81));
+        QFont font4;
+        font4.setPointSize(18);
+        currentUserLabel->setFont(font4);
+        selectUserComboBox = new QComboBox(profileTab);
+        selectUserComboBox->setObjectName(QString::fromUtf8("selectUserComboBox"));
+        selectUserComboBox->setGeometry(QRect(60, 180, 201, 51));
+        newUserBtn = new QPushButton(profileTab);
+        newUserBtn->setObjectName(QString::fromUtf8("newUserBtn"));
+        newUserBtn->setGeometry(QRect(290, 180, 111, 51));
+        clearUserBtn = new QPushButton(profileTab);
+        clearUserBtn->setObjectName(QString::fromUtf8("clearUserBtn"));
+        clearUserBtn->setGeometry(QRect(250, 610, 161, 71));
         tabWidget->addTab(profileTab, QString());
         label = new QLabel(SettingScene);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(100, 70, 191, 101));
-        QFont font4;
-        font4.setFamily(QString::fromUtf8("\347\255\211\347\272\277"));
-        font4.setPointSize(36);
-        label->setFont(font4);
+        QFont font5;
+        font5.setFamily(QString::fromUtf8("\347\255\211\347\272\277"));
+        font5.setPointSize(36);
+        label->setFont(font5);
 
         retranslateUi(SettingScene);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(3);
 
 
         QMetaObject::connectSlotsByName(SettingScene);
@@ -317,6 +337,9 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(generalTab), QCoreApplication::translate("SettingScene", "\351\200\232\347\224\250", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(videoTab), QCoreApplication::translate("SettingScene", "\345\233\276\345\203\217", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(keyboardTab), QCoreApplication::translate("SettingScene", "\351\224\256\347\233\230", nullptr));
+        currentUserLabel->setText(QCoreApplication::translate("SettingScene", "\345\275\223\345\211\215\347\224\250\346\210\267: ", nullptr));
+        newUserBtn->setText(QCoreApplication::translate("SettingScene", "\346\226\260\347\224\250\346\210\267", nullptr));
+        clearUserBtn->setText(QCoreApplication::translate("SettingScene", "\346\270\205\351\231\244\350\256\260\345\275\225", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(profileTab), QCoreApplication::translate("SettingScene", "\345\255\230\346\241\243", nullptr));
         label->setText(QCoreApplication::translate("SettingScene", "\350\256\276\347\275\256", nullptr));
     } // retranslateUi

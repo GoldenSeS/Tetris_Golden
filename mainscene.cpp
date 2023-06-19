@@ -8,6 +8,9 @@ mainscene::mainscene(QWidget *parent)
     , ui(new Ui::mainscene)
 {
     ui->setupUi(this);
+
+//    fm.loadProfilesFromFile("test.json");
+
     this->setWindowTitle(QString("TetrisMainScene"));
     this->setFixedSize(800,1000);
 

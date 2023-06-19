@@ -5,15 +5,25 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
+ProfileManager fm;
+
 ProfileManager::ProfileManager() {
 }
 
 ProfileManager::~ProfileManager() {
+    clearProfiles();
+}
+
+void ProfileManager::clearProfiles(){
     // 释放所有用户数据
     for (UserProfile* profile : userProfiles.values()) {
         delete profile;
     }
     userProfiles.clear();
+}
+
+void ProfileManager::addRecordFromUserProfileIndex(int index,Record record){
+    userProfiles.value(index)->addRecord(record);
 }
 
 void ProfileManager::addUserProfile(UserProfile* userProfile) {
@@ -49,10 +59,25 @@ QList<UserProfile*> ProfileManager::getAllUserProfiles() {
     return userProfiles.values();
 }
 
+int ProfileManager::getProfilesNum()const{
+    return userProfiles.size();
+}
+
+void ProfileManager::debugProfilesOutput(){
+    for(auto i:userProfiles){
+        qDebug()<<"用户ID:"<<i->getUserId();
+        qDebug()<<"用户昵称:"<<i->getUserName();
+        for(auto j:i->getRecordList()){
+            qDebug()<<" 记录"<<j.id<<j.time;
+        }
+        qDebug()<<"";
+    }
+}
+
 void ProfileManager::saveProfilesToFile(const QString& fileName) const {
     QFile file(fileName);
     if (!file.open(QIODevice::WriteOnly)) {
-        qDebug() << "无法打开文件" << fileName;
+        qDebug() << "无法打开Json文件" << fileName;
         return;
     }
     //用Json格式保存数据
@@ -65,11 +90,11 @@ void ProfileManager::saveProfilesToFile(const QString& fileName) const {
         QJsonArray recordArray;
         for (Record record : profile->getRecordList()) {
             QJsonObject recordObject;
-            recordObject.insert("id", record.record_id);
-            recordObject.insert("time", record.record_time.toString("yyyy-MM-dd hh:mm:ss"));
+            recordObject.insert("id", record.id);
+            recordObject.insert("time", record.time.toString("yyyy-MM-dd hh:mm:ss"));
             //棋盘数据
             QJsonArray checkerboardArray;
-            QVector<QVector<int>> checkerboard = profile->getRecordList().at(0).record_checkerboard.getCheckerBoardArray();
+            QVector<QVector<int>> checkerboard = profile->getRecordList().at(0).checkerboard.getCheckerBoardArray();
             for (int i = 0; i < GAME_HEIGHT; i++) {
                 QJsonArray lineArray;
                 for (int j = 0; j < GAME_WIDTH; j++) {
@@ -79,13 +104,15 @@ void ProfileManager::saveProfilesToFile(const QString& fileName) const {
             }
             recordObject.insert("checkerboard", checkerboardArray);
             //当前方块
-            recordObject.insert("presentblock",record.record_present_block->get_color());
+            recordObject.insert("presentblock",record.present_block);
             //下一个方块
-            recordObject.insert("nextblock",record.record_next_block->get_color());
+            recordObject.insert("nextblock",record.next_block);
+            //游戏速度
+            recordObject.insert("gamespeed",record.gameSpeed);
             //分数
-            recordObject.insert("score", record.record_score);
+            recordObject.insert("score", record.score);
             //游戏是否结束
-            recordObject.insert("isGameOver", record.record_isGameOver);
+            recordObject.insert("isGameOver", record.isGameOver);
             recordArray.append(recordObject);
         }
         jsonObject.insert("record", recordArray);
@@ -123,7 +150,7 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
         }
         UserProfile* profile = new UserProfile(id, name);
         Record record;
-        record.record_checkerboard.setCheckerBoardArray(checkerboard);
+        record.checkerboard.setCheckerBoardArray(checkerboard);
         profile->addRecord(record);
         userProfiles.insert(id, profile);
     }

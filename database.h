@@ -2,6 +2,7 @@
 #define DATABASE_H
 #include <QColor>
 #include <QString>
+
 //游戏网格大小
 extern int GAME_WIDTH;
 extern int GAME_HEIGHT;
@@ -19,5 +20,10 @@ extern QString MEDIAFILE;
 extern int MEDIAVOLUME;
 //键位设置
 extern Qt::Key KEYSETTING[5];
+
+//当前用户ID
+extern int USER_ID;
+
+void debugDatabase();
 
 #endif // DATABASE_H

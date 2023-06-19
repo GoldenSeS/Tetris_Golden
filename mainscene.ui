@@ -60,9 +60,9 @@
    <property name="geometry">
     <rect>
      <x>300</x>
-     <y>500</y>
+     <y>479</y>
      <width>200</width>
-     <height>200</height>
+     <height>301</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -87,7 +87,26 @@
        </font>
       </property>
       <property name="text">
-       <string>开始游戏</string>
+       <string>新游戏</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="loadGameBtn">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>等线</family>
+        <pointsize>16</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>加载游戏</string>
       </property>
      </widget>
     </item>

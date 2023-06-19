@@ -65,6 +65,9 @@ private:
     int game_height;
     int game_speed;
 
+    //判断游戏当前是否结束
+    bool isGameOver;
+
     //方块列表
     QList<Block*> blocklist;
     Block present_block;
@@ -73,9 +76,8 @@ private:
     //游戏管理类
     GameManager gm;
 
-    //存档管理类
-    ProfileManager fm;
-    UserProfile *testProfile = nullptr;
+    //获取当前状态记录
+    Record getCurrentRecord();
 
     //方块初始化
     void blockInit();

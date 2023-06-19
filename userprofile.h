@@ -8,13 +8,21 @@
 
 struct Record
 {
-    int record_id;
-    QDateTime record_time;
-    CheckerBoard record_checkerboard;
-    Block* record_present_block;
-    Block* record_next_block;
-    int record_score;
-    bool record_isGameOver;
+    //记录编号与时间
+    int id;
+    QDateTime time;
+
+    //游戏棋盘
+    CheckerBoard checkerboard;
+    int gameSpeed;
+
+    //当前和下一个方块
+    int present_block;
+    int next_block;
+
+    //游戏分数与是否结束
+    int score;
+    bool isGameOver;
 };
 
 class UserProfile
@@ -28,7 +36,7 @@ public:
     int getUserId() const;
     QString getUserName() const;
     void addRecord(Record record);
-    void addRecord(int id, QDateTime time, CheckerBoard checkerboard, Block* present_block, Block* next_block, int score, bool isGameOver);
+    void addRecord(int id, QDateTime time, CheckerBoard checkerboard, int gameSpeed, int present_block, int next_block, int score, bool isGameOver);
     QVector<Record> getRecordList() const;
     void clearRecordList();
     void deleteRecord(int index);

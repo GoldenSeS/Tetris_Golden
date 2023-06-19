@@ -51,16 +51,17 @@ void UserProfile::deleteRecord(int index)
     recordList.remove(index);
 }
 
-void UserProfile::addRecord(int id, QDateTime time, CheckerBoard checkerboard, Block* present_block, Block* next_block, int score, bool isGameOver)
+void UserProfile::addRecord(int id, QDateTime time, CheckerBoard checkerboard,int gameSpeed, int present_block, int next_block, int score, bool isGameOver)
 {
     Record record;
-    record.record_id = id;
-    record.record_time = time;
-    record.record_checkerboard = checkerboard;
-    record.record_present_block = present_block;
-    record.record_next_block = next_block;
-    record.record_score = score;
-    record.record_isGameOver = isGameOver;
+    record.id = id;
+    record.time = time;
+    record.gameSpeed=gameSpeed;
+    record.checkerboard = checkerboard;
+    record.present_block = present_block;
+    record.next_block = next_block;
+    record.score = score;
+    record.isGameOver = isGameOver;
     recordList.push_back(record);
 }
 

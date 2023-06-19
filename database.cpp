@@ -1,4 +1,6 @@
 #include "database.h"
+#include "profilemanager.h"
+#include <QDebug>
 int GAME_WIDTH = 10;
 
 int GAME_HEIGHT = 20;
@@ -27,4 +29,11 @@ Qt::Key KEYSETTING[5]{
     Qt::Key_Down,
     Qt::Key_Up,
     Qt::Key_Escape
-};
+}; 
+
+void debugDatabase(){
+    qDebug()<<"游戏宽高"<<GAME_WIDTH<<GAME_HEIGHT;
+    qDebug()<<"当前用户ID"<<USER_ID;
+}
+
+int USER_ID=0;

@@ -21,14 +21,12 @@ GameScene::GameScene(QWidget *parent) :
     // 窗口初始化
     ui->setupUi(this);
 
-    testProfile = new UserProfile;
-    testProfile->setUserId(1);
-    testProfile->setUserName("golden");
 
     ui->pauseLabel->setVisible(false);
     ui->pauseLabel->setStyleSheet("color: rgba(0, 0, 0, 128);");
     //游戏状态初始化
     isStart=-1;
+    isGameOver=true;
     //分数初始化
     score = 0;
     //随机数模块初始化
@@ -54,13 +52,17 @@ GameScene::GameScene(QWidget *parent) :
 
         this->grabKeyboard();
 
+        //初始化游戏参数
         game_width = GAME_WIDTH;
         game_height = GAME_HEIGHT;
         game_speed = 170 - REFRESHING_RATE;
+        isGameOver =false;
 
         //初始化时间参数
         timerId = startTimer(game_speed);
         timerCnt = DELAY_DESCENT;
+
+        blockInit();
 
         ui->restart_btn->setText("重启");
         isStart=1;
@@ -86,16 +88,14 @@ GameScene::GameScene(QWidget *parent) :
         checkerboard.clearCheckerBoard();
         nextBlkGraphicScene->clear();
         render();
-        fm.addUserProfile(testProfile);
+        fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
         fm.saveProfilesToFile("test.json");
         emit gameSceneBack();
     });
 
     connect(ui->save_btn,&QPushButton::clicked,this,[=](){
-        QDateTime dateTime= QDateTime::currentDateTime();//获取系统当前的时间
-        Block* present_block_ptr = &present_block;
-        Block* next_block_ptr = &next_block;
-        testProfile->addRecord(1,QDateTime::currentDateTime(),checkerboard,present_block_ptr,next_block_ptr,score,true);
+        fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
+        fm.saveProfilesToFile("test.json");
         qDebug()<<"存档成功";
     });
 
@@ -104,7 +104,21 @@ GameScene::GameScene(QWidget *parent) :
     next_block = *gm.get_random_block(blocklist);
 
 }
+Record GameScene::getCurrentRecord(){
+    Record tempRecord;
+    tempRecord.id=fm.getUserProfile(USER_ID)->getRecordList().size();
+    tempRecord.time=QDateTime::currentDateTime();
+    tempRecord.score=score;
+    tempRecord.gameSpeed=game_speed;
+    tempRecord.isGameOver=isGameOver;
+    tempRecord.next_block=next_block.get_color();
+    tempRecord.present_block=present_block.get_color();
+    tempRecord.checkerboard=checkerboard;
+    return  tempRecord;
+}
+
 void GameScene::blockInit(){
+    blocklist.clear();
     // 初始化方块
     BlockL* blockL_ptr = new BlockL;
     BlockO* blockO_ptr = new BlockO;
@@ -228,6 +242,7 @@ void GameScene::singleStepHandle(){
     const int highestNum=checkerboard.getHighestFixedBlock();
     if(highestNum<2){
         isStart=-1;
+        isGameOver=true;
         QMessageBox msgBox;
         msgBox.setText(QString("游戏结束！您的分数为：%1").arg(QString::number(score)));
         msgBox.exec();

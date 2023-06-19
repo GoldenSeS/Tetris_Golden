@@ -25,6 +25,7 @@ public:
     QWidget *mainSceneBtnWidget;
     QVBoxLayout *verticalLayout;
     QPushButton *startGameBtn;
+    QPushButton *loadGameBtn;
     QPushButton *settingBtn;
     QPushButton *exitBtn;
 
@@ -51,7 +52,7 @@ public:
         GameTitleLabel->setAlignment(Qt::AlignCenter);
         mainSceneBtnWidget = new QWidget(mainscene);
         mainSceneBtnWidget->setObjectName(QString::fromUtf8("mainSceneBtnWidget"));
-        mainSceneBtnWidget->setGeometry(QRect(300, 500, 200, 200));
+        mainSceneBtnWidget->setGeometry(QRect(300, 479, 200, 301));
         QSizePolicy sizePolicy1(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
@@ -72,6 +73,14 @@ public:
         startGameBtn->setFont(font1);
 
         verticalLayout->addWidget(startGameBtn);
+
+        loadGameBtn = new QPushButton(mainSceneBtnWidget);
+        loadGameBtn->setObjectName(QString::fromUtf8("loadGameBtn"));
+        sizePolicy2.setHeightForWidth(loadGameBtn->sizePolicy().hasHeightForWidth());
+        loadGameBtn->setSizePolicy(sizePolicy2);
+        loadGameBtn->setFont(font1);
+
+        verticalLayout->addWidget(loadGameBtn);
 
         settingBtn = new QPushButton(mainSceneBtnWidget);
         settingBtn->setObjectName(QString::fromUtf8("settingBtn"));
@@ -99,7 +108,8 @@ public:
     {
         mainscene->setWindowTitle(QCoreApplication::translate("mainscene", "mainscene", nullptr));
         GameTitleLabel->setText(QCoreApplication::translate("mainscene", "Tetris", nullptr));
-        startGameBtn->setText(QCoreApplication::translate("mainscene", "\345\274\200\345\247\213\346\270\270\346\210\217", nullptr));
+        startGameBtn->setText(QCoreApplication::translate("mainscene", "\346\226\260\346\270\270\346\210\217", nullptr));
+        loadGameBtn->setText(QCoreApplication::translate("mainscene", "\345\212\240\350\275\275\346\270\270\346\210\217", nullptr));
         settingBtn->setText(QCoreApplication::translate("mainscene", "\350\256\276\347\275\256", nullptr));
         exitBtn->setText(QCoreApplication::translate("mainscene", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
