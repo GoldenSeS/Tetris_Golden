@@ -36,4 +36,6 @@ void debugDatabase(){
     qDebug()<<"当前用户ID"<<USER_ID;
 }
 
+QString FILEPATH="profile.json";
+
 int USER_ID=0;

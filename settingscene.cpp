@@ -46,14 +46,16 @@ SettingScene::SettingScene(QWidget *parent) :
         setNumFromDefault();
     });
 
-    //创建新用户按钮
+    //创建新用户下拉框
     connect(ui->selectUserComboBox,&QComboBox::currentTextChanged,[=](){
         ui->currentUserLabel->setText("当前用户：\n"+ui->selectUserComboBox->currentText());
     });
 
+    //清除用户存档按钮
     connect(ui->clearUserBtn,&QPushButton::clicked,this,[=](){
         fm.clearProfiles();
         ui->selectUserComboBox->clear();
+        addNewProfile(true);
     });
 
     mediaPlayer = new QMediaPlayer;
@@ -75,7 +77,6 @@ SettingScene::SettingScene(QWidget *parent) :
         } else {
             mediaPlayer->stop();
             ui->tryListeningBtn->setText("试听");
-
         }
     });
 
@@ -86,8 +87,14 @@ SettingScene::SettingScene(QWidget *parent) :
 
     // 连接添加新用户到存档
     connect(ui->newUserBtn, &QPushButton::clicked, [&]() {
-        addNewProfile();
+        addNewProfile(false);
     });
+
+    // 通过存档设置初始用户选择界面
+    for(auto i:fm.getAllUserProfiles()){
+        QString name=i->getUserName();
+        ui->selectUserComboBox->addItem(name);
+    }
 
     init();
     setNumFromDatabase();
@@ -269,23 +276,37 @@ bool SettingScene::keyRepetition(){
     return tem_set.size()<5;
 }
 
-void SettingScene::addNewProfile(){
-    QString name = QInputDialog::getText(this,"新用户","请输入新用户昵称:", QLineEdit::Normal,"admin");
-    if(name.size()>=10||name.size()<1){
-        QMessageBox::critical(this,"错误","字数限制(<10)!");
-        return;
-    }
-    for(auto i:fm.getAllUserProfiles()){
-        if(i->getUserName()==name){
-            QMessageBox::critical(this,"错误","昵称已被占用");
+void SettingScene::addNewProfile(bool isRequired){
+    QInputDialog inp;
+    bool ok;
+    QString name;
+
+    while(true){
+        name=inp.getText(this,"新用户","请输入新用户昵称:", QLineEdit::Normal,"admin",&ok);
+        if(!ok&&!isRequired){
             return;
         }
+        if(!ok&&isRequired){
+            continue;
+        }
+        if(name.size()>=10||name.size()<1){
+            QMessageBox::critical(this,"错误","字数限制(<10)!");
+            continue;
+        }
+        for(auto i:fm.getAllUserProfiles()){
+            if(i->getUserName()==name){
+                QMessageBox::critical(this,"错误","昵称已被占用");
+                continue;
+            }
+        }
+        break;
     }
+
     UserProfile* temp = new UserProfile(fm.getProfilesNum(),name);
     fm.addUserProfile(temp);
     ui->selectUserComboBox->addItem(name);
     ui->selectUserComboBox->setCurrentIndex(fm.getProfilesNum()-1);
-//    fm.debugProfilesOutput();
+    //    fm.debugProfilesOutput();
 }
 
 SettingScene::~SettingScene()

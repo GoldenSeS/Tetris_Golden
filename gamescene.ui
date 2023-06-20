@@ -124,25 +124,6 @@
     <string>开始</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="save_btn">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>700</y>
-     <width>150</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Agency FB</family>
-     <pointsize>12</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>存档</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="pauseLabel">
    <property name="geometry">
     <rect>

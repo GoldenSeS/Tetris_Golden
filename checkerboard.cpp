@@ -1,19 +1,27 @@
 #include "checkerboard.h"
-
+#include <QDebug>
 CheckerBoard::CheckerBoard()
 {
     init();
 }
 
 void CheckerBoard::init(){
-    this->CheckerBoardArray.resize(GAME_HEIGHT*GAME_WIDTH);
+    this->CheckerBoardArray.resize(GAME_HEIGHT);
     for(int i=0;i<GAME_HEIGHT;i++)
     {
         this->CheckerBoardArray[i].resize(GAME_WIDTH);
     }
 }
 
-void CheckerBoard::setBlock(Block block)
+void CheckerBoard::debugCheckerBoard(){
+    for(int i=0;i<CheckerBoardArray.size();i++)
+    {
+        qDebug()<<"        "<<CheckerBoardArray[i];
+    }
+    qDebug()<<"";
+}
+
+void CheckerBoard::CheckerBoard::setBlock(Block block)
 {
     QVector<QPoint>all_pos = block.get_all_block_pos();
     for(auto pos:all_pos){

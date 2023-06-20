@@ -24,6 +24,8 @@ extern Qt::Key KEYSETTING[5];
 //当前用户ID
 extern int USER_ID;
 
+extern QString FILEPATH;
+
 void debugDatabase();
 
 #endif // DATABASE_H

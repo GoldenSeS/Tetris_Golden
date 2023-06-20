@@ -31,7 +31,6 @@ public:
     QLCDNumber *scoreLCD;
     QPushButton *backBtn;
     QPushButton *restart_btn;
-    QPushButton *save_btn;
     QLabel *pauseLabel;
 
     void setupUi(QWidget *GameScene)
@@ -87,10 +86,6 @@ public:
         restart_btn->setObjectName(QString::fromUtf8("restart_btn"));
         restart_btn->setGeometry(QRect(550, 770, 150, 50));
         restart_btn->setFont(font1);
-        save_btn = new QPushButton(GameScene);
-        save_btn->setObjectName(QString::fromUtf8("save_btn"));
-        save_btn->setGeometry(QRect(550, 700, 150, 50));
-        save_btn->setFont(font1);
         pauseLabel = new QLabel(GameScene);
         pauseLabel->setObjectName(QString::fromUtf8("pauseLabel"));
         pauseLabel->setGeometry(QRect(110, 420, 281, 181));
@@ -112,7 +107,6 @@ public:
         scoreLabel->setText(QCoreApplication::translate("GameScene", "\345\210\206\346\225\260", nullptr));
         backBtn->setText(QCoreApplication::translate("GameScene", "\350\277\224\345\233\236", nullptr));
         restart_btn->setText(QCoreApplication::translate("GameScene", "\345\274\200\345\247\213", nullptr));
-        save_btn->setText(QCoreApplication::translate("GameScene", "\345\255\230\346\241\243", nullptr));
         pauseLabel->setText(QCoreApplication::translate("GameScene", "PAUSE", nullptr));
     } // retranslateUi
 

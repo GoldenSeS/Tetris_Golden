@@ -21,7 +21,6 @@ GameScene::GameScene(QWidget *parent) :
     // 窗口初始化
     ui->setupUi(this);
 
-
     ui->pauseLabel->setVisible(false);
     ui->pauseLabel->setStyleSheet("color: rgba(0, 0, 0, 128);");
     //游戏状态初始化
@@ -49,21 +48,16 @@ GameScene::GameScene(QWidget *parent) :
     blockInit();
     // 设置重启按钮
     connect(ui->restart_btn,&QPushButton::clicked,this,[=](){
-
         this->grabKeyboard();
-
         //初始化游戏参数
         game_width = GAME_WIDTH;
         game_height = GAME_HEIGHT;
         game_speed = 170 - REFRESHING_RATE;
         isGameOver =false;
-
         //初始化时间参数
         timerId = startTimer(game_speed);
         timerCnt = DELAY_DESCENT;
-
         blockInit();
-
         ui->restart_btn->setText("重启");
         isStart=1;
         score=0;
@@ -78,25 +72,23 @@ GameScene::GameScene(QWidget *parent) :
 
     // 设置返回按钮
     connect(ui->backBtn,&QPushButton::clicked,this,[=](){
+
+        if(isStart==1){
+            fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
+            fm.saveProfilesToFile(FILEPATH);
+            fm.debugProfilesOutput();
+        }
+
         ui->restart_btn->setText("开始");
         isStart=-1;
         score=0;
         ui->scoreLCD->display(0);
-        qDebug()<<"游戏界面点击返回按钮";
         ui->pauseLabel->setVisible(false);
         gm.gameRestart(checkerboard,present_block,next_block,blocklist);
         checkerboard.clearCheckerBoard();
         nextBlkGraphicScene->clear();
         render();
-        fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
-        fm.saveProfilesToFile("test.json");
         emit gameSceneBack();
-    });
-
-    connect(ui->save_btn,&QPushButton::clicked,this,[=](){
-        fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
-        fm.saveProfilesToFile("test.json");
-        qDebug()<<"存档成功";
     });
 
     //初始化方块
@@ -243,6 +235,9 @@ void GameScene::singleStepHandle(){
     if(highestNum<2){
         isStart=-1;
         isGameOver=true;
+        fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
+        fm.saveProfilesToFile(FILEPATH);
+        fm.debugProfilesOutput();
         QMessageBox msgBox;
         msgBox.setText(QString("游戏结束！您的分数为：%1").arg(QString::number(score)));
         msgBox.exec();

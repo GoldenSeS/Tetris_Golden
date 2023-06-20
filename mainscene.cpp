@@ -9,7 +9,8 @@ mainscene::mainscene(QWidget *parent)
 {
     ui->setupUi(this);
 
-//    fm.loadProfilesFromFile("test.json");
+    fm.loadProfilesFromFile(FILEPATH);
+    fm.debugProfilesOutput();
 
     this->setWindowTitle(QString("TetrisMainScene"));
     this->setFixedSize(800,1000);
@@ -49,7 +50,7 @@ mainscene::mainscene(QWidget *parent)
         this->show();
     });
     connect(settingScenePtr,&SettingScene::settingSceneBack,this,[=](){
-        qDebug()<<"游戏场景点击返回按钮";
+        qDebug()<<"设置场景点击返回按钮";
         this->move(settingScenePtr->pos());
         settingScenePtr->hide();
         this->show();

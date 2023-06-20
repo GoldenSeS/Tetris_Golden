@@ -68,7 +68,10 @@ void ProfileManager::debugProfilesOutput(){
         qDebug()<<"用户ID:"<<i->getUserId();
         qDebug()<<"用户昵称:"<<i->getUserName();
         for(auto j:i->getRecordList()){
-            qDebug()<<" 记录"<<j.id<<j.time;
+            qDebug()<<"    记录ID"<<j.id;
+            qDebug()<<"      *时间"<<j.time.toString();
+            qDebug()<<"      *是否胜利"<<j.isGameOver<<"      *分数"<<j.score;
+            j.checkerboard.debugCheckerBoard();
         }
         qDebug()<<"";
     }
@@ -129,29 +132,83 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
         qDebug() << "无法打开文件" << fileName;
         return;
     }
-    QByteArray data = file.readAll();
+    QByteArray fileData = file.readAll();
     file.close();
-    QJsonDocument jsonDoc(QJsonDocument::fromJson(data));
-    QJsonArray jsonArray = jsonDoc.array();
-    for (int i = 0; i < jsonArray.size(); i++) {
-        QJsonObject jsonObject = jsonArray.at(i).toObject();
-        int id = jsonObject.value("id").toInt();
-        QString name = jsonObject.value("name").toString();
-        //将Json格式的棋盘数据转换为棋盘对象
-        QJsonArray checkerboardArray = jsonObject.value("checkerboard").toArray();
-        QVector<QVector<int>> checkerboard;
-        for (int i = 0; i < checkerboardArray.size(); i++) {
-            QJsonArray lineArray = checkerboardArray.at(i).toArray();
-            QVector<int> line;
-            for (int j = 0; j < lineArray.size(); j++) {
-                line.append(lineArray.at(j).toInt());
-            }
-            checkerboard.append(line);
-        }
-        UserProfile* profile = new UserProfile(id, name);
-        Record record;
-        record.checkerboard.setCheckerBoardArray(checkerboard);
-        profile->addRecord(record);
-        userProfiles.insert(id, profile);
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(fileData);
+    if (jsonDoc.isNull()) {
+        qDebug() << "Json文件解析失败" << fileName;
+        return;
     }
+
+    if (!jsonDoc.isArray()) {
+        qDebug() << "Json文件格式错误" << fileName;
+        return;
+    }
+
+    QJsonArray jsonArray = jsonDoc.array();
+    clearProfiles(); // 清空现有的用户配置数据
+
+    for (const QJsonValue& jsonValue : jsonArray) {
+        if (!jsonValue.isObject()) {
+            qDebug() << "Json文件格式错误" << fileName;
+            return;
+        }
+
+        QJsonObject jsonObject = jsonValue.toObject();
+        int userId = jsonObject.value("id").toInt();
+        QString userName = jsonObject.value("name").toString();
+
+        UserProfile* profile = new UserProfile(userId, userName);
+        userProfiles.insert(userId, profile);
+
+        QJsonArray recordArray = jsonObject.value("record").toArray();
+        for (const QJsonValue& recordValue : recordArray) {
+            if (!recordValue.isObject()) {
+                qDebug() << "Json文件格式错误" << fileName;
+                return;
+            }
+
+            QJsonObject recordObject = recordValue.toObject();
+            Record record;
+            record.id = recordObject.value("id").toInt();
+            record.time = QDateTime::fromString(recordObject.value("time").toString(), "yyyy-MM-dd hh:mm:ss");
+            // 棋盘数据
+            QJsonArray checkerboardArray = recordObject.value("checkerboard").toArray();
+            QVector<QVector<int>> checkerboard;
+            for (const QJsonValue& lineValue : checkerboardArray) {
+                if (!lineValue.isArray()) {
+                    qDebug() << "Json文件格式错误" << fileName;
+                    return;
+                }
+
+                QJsonArray lineArray = lineValue.toArray();
+                QVector<int> line;
+                for (const QJsonValue& value : lineArray) {
+                    if (!value.isDouble()) {
+                        qDebug() << "Json文件格式错误" << fileName;
+                        return;
+                    }
+                    line.append(value.toInt());
+                }
+                checkerboard.append(line);
+            }
+            record.checkerboard.setCheckerBoardArray(checkerboard);
+            // 当前方块
+            record.present_block = recordObject.value("presentblock").toInt();
+            // 下一个方块
+            record.next_block = recordObject.value("nextblock").toInt();
+            // 游戏速度
+            record.gameSpeed = recordObject.value("gamespeed").toDouble();
+            // 分数
+            record.score = recordObject.value("score").toInt();
+            // 游戏是否结束
+            record.isGameOver = recordObject.value("isGameOver").toBool();
+
+            profile->addRecord(record);
+        }
+    }
+
+    qDebug() << "读取文件成功";
+
 }

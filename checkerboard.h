@@ -27,6 +27,9 @@ public:
     //设置单行数据
     void setCheckerBoardLine(QVector<int>,int lineNum);
 
+    //debug棋盘数据
+    void debugCheckerBoard();
+
     //清除棋盘非固定块
     void clearMovingBlock();
 

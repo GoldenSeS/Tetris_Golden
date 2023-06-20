@@ -35,7 +35,7 @@ private:
     void disableMouseClick(QWidget *widget);
     void enableMouseClick(QWidget *widget);
 
-    void addNewProfile();
+    void addNewProfile(bool isRequired);
 
 signals:
     void settingSceneBack();
