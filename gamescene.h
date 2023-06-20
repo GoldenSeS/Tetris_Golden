@@ -12,6 +12,7 @@
 #include "gamemanager.h"
 #include "profilemanager.h"
 #include "profile.h"
+#include <QMediaPlayer>
 namespace Ui {
 class GameScene;
 }
@@ -78,6 +79,9 @@ private:
 
     //获取当前状态记录
     Record getCurrentRecord();
+
+    //音乐播放器
+    QMediaPlayer *mediaPlayer;
 
     //方块初始化
     void blockInit();

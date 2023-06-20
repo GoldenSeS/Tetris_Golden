@@ -70,7 +70,7 @@ void ProfileManager::debugProfilesOutput(){
         for(auto j:i->getRecordList()){
             qDebug()<<"    记录ID"<<j.id;
             qDebug()<<"      *时间"<<j.time.toString();
-            qDebug()<<"      *是否胜利"<<j.isGameOver<<"      *分数"<<j.score;
+            qDebug()<<"      *是否结束"<<j.isGameOver<<"      *分数"<<j.score;
             j.checkerboard.debugCheckerBoard();
         }
         qDebug()<<"";
@@ -140,12 +140,10 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
         qDebug() << "Json文件解析失败" << fileName;
         return;
     }
-
     if (!jsonDoc.isArray()) {
         qDebug() << "Json文件格式错误" << fileName;
         return;
     }
-
     QJsonArray jsonArray = jsonDoc.array();
     clearProfiles(); // 清空现有的用户配置数据
 

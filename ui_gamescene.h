@@ -12,9 +12,11 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QGraphicsView>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -32,6 +34,13 @@ public:
     QPushButton *backBtn;
     QPushButton *restart_btn;
     QLabel *pauseLabel;
+    QWidget *widget;
+    QVBoxLayout *verticalLayout_2;
+    QWidget *scoreWidget_2;
+    QHBoxLayout *horizontalLayout;
+    QLabel *musicLabel;
+    QPushButton *musicBtn;
+    QSlider *musicSlider;
 
     void setupUi(QWidget *GameScene)
     {
@@ -79,7 +88,7 @@ public:
         backBtn->setObjectName(QString::fromUtf8("backBtn"));
         backBtn->setGeometry(QRect(550, 840, 150, 50));
         QFont font1;
-        font1.setFamily(QString::fromUtf8("Agency FB"));
+        font1.setFamily(QString::fromUtf8("\347\255\211\347\272\277"));
         font1.setPointSize(12);
         backBtn->setFont(font1);
         restart_btn = new QPushButton(GameScene);
@@ -95,6 +104,50 @@ public:
         pauseLabel->setFont(font2);
         pauseLabel->setLayoutDirection(Qt::LeftToRight);
         pauseLabel->setAlignment(Qt::AlignCenter);
+        widget = new QWidget(GameScene);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(510, 540, 201, 131));
+        verticalLayout_2 = new QVBoxLayout(widget);
+        verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
+        scoreWidget_2 = new QWidget(widget);
+        scoreWidget_2->setObjectName(QString::fromUtf8("scoreWidget_2"));
+        horizontalLayout = new QHBoxLayout(scoreWidget_2);
+        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
+        musicLabel = new QLabel(scoreWidget_2);
+        musicLabel->setObjectName(QString::fromUtf8("musicLabel"));
+        sizePolicy1.setHeightForWidth(musicLabel->sizePolicy().hasHeightForWidth());
+        musicLabel->setSizePolicy(sizePolicy1);
+        musicLabel->setFont(font);
+        musicLabel->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout->addWidget(musicLabel);
+
+        musicBtn = new QPushButton(scoreWidget_2);
+        musicBtn->setObjectName(QString::fromUtf8("musicBtn"));
+        QSizePolicy sizePolicy2(QSizePolicy::Fixed, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(musicBtn->sizePolicy().hasHeightForWidth());
+        musicBtn->setSizePolicy(sizePolicy2);
+        musicBtn->setMaximumSize(QSize(60, 16777215));
+        musicBtn->setFont(font1);
+
+        horizontalLayout->addWidget(musicBtn);
+
+
+        verticalLayout_2->addWidget(scoreWidget_2);
+
+        musicSlider = new QSlider(widget);
+        musicSlider->setObjectName(QString::fromUtf8("musicSlider"));
+        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(musicSlider->sizePolicy().hasHeightForWidth());
+        musicSlider->setSizePolicy(sizePolicy3);
+        musicSlider->setOrientation(Qt::Horizontal);
+
+        verticalLayout_2->addWidget(musicSlider);
+
 
         retranslateUi(GameScene);
 
@@ -108,6 +161,8 @@ public:
         backBtn->setText(QCoreApplication::translate("GameScene", "\350\277\224\345\233\236", nullptr));
         restart_btn->setText(QCoreApplication::translate("GameScene", "\345\274\200\345\247\213", nullptr));
         pauseLabel->setText(QCoreApplication::translate("GameScene", "PAUSE", nullptr));
+        musicLabel->setText(QCoreApplication::translate("GameScene", "\351\237\263\344\271\220", nullptr));
+        musicBtn->setText(QCoreApplication::translate("GameScene", "\346\222\255\346\224\276", nullptr));
     } // retranslateUi
 
 };

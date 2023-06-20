@@ -20,7 +20,8 @@ GameScene::GameScene(QWidget *parent) :
 {
     // 窗口初始化
     ui->setupUi(this);
-
+    this->setFixedSize(800,1000);
+    this->setWindowTitle("TetrisGameScene");
     ui->pauseLabel->setVisible(false);
     ui->pauseLabel->setStyleSheet("color: rgba(0, 0, 0, 128);");
     //游戏状态初始化
@@ -30,9 +31,21 @@ GameScene::GameScene(QWidget *parent) :
     score = 0;
     //随机数模块初始化
     qsrand(QTime::currentTime().msec());
-
-    this->setFixedSize(800,1000);
-    this->setWindowTitle("TetrisGameScene");
+    //音乐播放器初始化
+    mediaPlayer = new QMediaPlayer;
+    ui->musicSlider->setRange(0,100);
+    ui->musicSlider->setValue(MEDIAVOLUME);
+    connect(ui->musicBtn,&QPushButton::clicked,[=](){
+        if (mediaPlayer->state() != QMediaPlayer::PlayingState&&MEDIAFILE!="") {
+            mediaPlayer->setMedia(QUrl::fromLocalFile(MEDIAFILE));
+            mediaPlayer->play();
+            ui->musicBtn->setText("暂停");
+        } else {
+            mediaPlayer->stop();
+            ui->musicBtn->setText("播放");
+        }
+    });
+    connect(ui->musicSlider, &QSlider::valueChanged, mediaPlayer, &QMediaPlayer::setVolume);
 
     // 创建 QGraphicsView 对象
     gameView = ui->gameGraphicsView;
@@ -72,14 +85,19 @@ GameScene::GameScene(QWidget *parent) :
 
     // 设置返回按钮
     connect(ui->backBtn,&QPushButton::clicked,this,[=](){
-
-        if(isStart==1){
-            fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
-            fm.saveProfilesToFile(FILEPATH);
-            fm.debugProfilesOutput();
-        }
-
+        mediaPlayer->stop();
+        ui->musicBtn->setText("播放");
         ui->restart_btn->setText("开始");
+        if(isStart==1){
+            isStart=-1;
+            QMessageBox::StandardButton saveBox;
+            saveBox=QMessageBox::question(this, "保存", "是否保存当前记录", QMessageBox::Yes|QMessageBox::No);
+            if(saveBox==QMessageBox::Yes){
+                fm.addRecordFromUserProfileIndex(USER_ID,getCurrentRecord());
+                fm.saveProfilesToFile(FILEPATH);
+                fm.debugProfilesOutput();
+            }
+        }
         isStart=-1;
         score=0;
         ui->scoreLCD->display(0);
@@ -90,7 +108,6 @@ GameScene::GameScene(QWidget *parent) :
         render();
         emit gameSceneBack();
     });
-
     //初始化方块
     present_block = *gm.get_random_block(blocklist);
     next_block = *gm.get_random_block(blocklist);
@@ -335,6 +352,7 @@ void GameScene::nextBlk_render(){
         }
     }
 }
+
 GameScene::~GameScene()
 {
     delete ui;

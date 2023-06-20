@@ -56,6 +56,8 @@ SettingScene::SettingScene(QWidget *parent) :
         fm.clearProfiles();
         ui->selectUserComboBox->clear();
         addNewProfile(true);
+        fm.saveProfilesToFile(FILEPATH);
+        fm.debugProfilesOutput();
     });
 
     mediaPlayer = new QMediaPlayer;
