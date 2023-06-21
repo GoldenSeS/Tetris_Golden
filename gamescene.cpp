@@ -123,7 +123,7 @@ Record GameScene::getCurrentRecord(){
     tempRecord.next_block=next_block.get_color();
     tempRecord.present_block=present_block.get_color();
     tempRecord.checkerboard=checkerboard;
-    return  tempRecord;
+    return tempRecord;
 }
 
 void GameScene::blockInit(){

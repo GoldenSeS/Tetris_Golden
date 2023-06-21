@@ -97,7 +97,7 @@ void ProfileManager::saveProfilesToFile(const QString& fileName) const {
             recordObject.insert("time", record.time.toString("yyyy-MM-dd hh:mm:ss"));
             //棋盘数据
             QJsonArray checkerboardArray;
-            QVector<QVector<int>> checkerboard = profile->getRecordList().at(0).checkerboard.getCheckerBoardArray();
+            QVector<QVector<int>> checkerboard = record.checkerboard.getCheckerBoardArray();
             for (int i = 0; i < GAME_HEIGHT; i++) {
                 QJsonArray lineArray;
                 for (int j = 0; j < GAME_WIDTH; j++) {
@@ -166,7 +166,6 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
                 qDebug() << "Json文件格式错误" << fileName;
                 return;
             }
-
             QJsonObject recordObject = recordValue.toObject();
             Record record;
             record.id = recordObject.value("id").toInt();

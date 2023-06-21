@@ -1,8 +1,10 @@
 #include "mainscene.h"
 #include "ui_mainscene.h"
+
 #include <QDebug>
 #include <QPushButton>
 #include <QDesktopWidget>
+#include <QMessageBox>
 mainscene::mainscene(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::mainscene)
@@ -25,6 +27,9 @@ mainscene::mainscene(QWidget *parent)
     //设置场景指针
     settingScenePtr = new SettingScene;
 
+    //读档场景指针
+    loadScenePtr = new LoadGameScene;
+
     connect(ui->startGameBtn,&QPushButton::clicked,this,[=](){
         qDebug()<<"主场景点击开始游戏";
         gameScenePtr->move(this->pos());
@@ -33,9 +38,22 @@ mainscene::mainscene(QWidget *parent)
     });
 
     connect(ui->settingBtn,&QPushButton::clicked,this,[=](){
-        qDebug()<<"主场景点击开始游戏";
+        qDebug()<<"主场景点击开始新游戏";
         settingScenePtr->move(this->pos());
         settingScenePtr->show();
+        this->hide();
+    });
+
+    connect(ui->loadGameBtn,&QPushButton::clicked,this,[=](){
+        qDebug()<<"主场景点击加载游戏";
+        if(fm.getUserProfile(USER_ID)->getRecordList().empty()){
+            QMessageBox::critical(this,"错误","存档为空");
+            return;
+        }
+        emit enterLoadGameScene();
+        loadScenePtr->move(this->pos());
+        loadScenePtr->showRenderScene();
+        loadScenePtr->show();
         this->hide();
     });
 
@@ -55,6 +73,13 @@ mainscene::mainscene(QWidget *parent)
         settingScenePtr->hide();
         this->show();
     });
+    connect(loadScenePtr,&LoadGameScene::loadSceneBack,this,[=](){
+        qDebug()<<"读档场景点击返回按钮";
+        this->move(loadScenePtr->pos());
+        loadScenePtr->hide();
+        this->show();
+    });
+
 }
 
 mainscene::~mainscene()

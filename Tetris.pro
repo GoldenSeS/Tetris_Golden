@@ -30,6 +30,7 @@ SOURCES += \
     gamemanager.cpp \
     gamescene.cpp \
     keyoptionblock.cpp \
+    loadgamescene.cpp \
     main.cpp \
     mainscene.cpp \
     optionblock.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
     gamemanager.h \
     gamescene.h \
     keyoptionblock.h \
+    loadgamescene.h \
     mainscene.h \
     optionblock.h \
     profilemanager.h \
@@ -62,6 +64,7 @@ FORMS += \
     coloroptionblock.ui \
     gamescene.ui \
     keyoptionblock.ui \
+    loadgamescene.ui \
     mainscene.ui \
     optionblock.ui \
     settingscene.ui

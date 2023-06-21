@@ -4,6 +4,7 @@
 #include <QWidget>
 #include "gamescene.h"
 #include "settingscene.h"
+#include "loadgamescene.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainscene; }
 QT_END_NAMESPACE
@@ -19,7 +20,12 @@ public:
 private:
     Ui::mainscene *ui;
 
+    LoadGameScene *loadScenePtr = nullptr;
     GameScene *gameScenePtr = nullptr;
     SettingScene *settingScenePtr = nullptr;
+
+signals:
+    void enterLoadGameScene();
+
 };
 #endif // MAINSCENE_H
