@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -28,6 +29,7 @@ public:
     QPushButton *loadGameBtn;
     QPushButton *settingBtn;
     QPushButton *exitBtn;
+    QToolButton *introBtn;
 
     void setupUi(QWidget *mainscene)
     {
@@ -98,6 +100,13 @@ public:
 
         verticalLayout->addWidget(exitBtn);
 
+        introBtn = new QToolButton(mainscene);
+        introBtn->setObjectName(QString::fromUtf8("introBtn"));
+        introBtn->setGeometry(QRect(30, 30, 71, 71));
+        QFont font2;
+        font2.setFamily(QString::fromUtf8("Agency FB"));
+        font2.setPointSize(16);
+        introBtn->setFont(font2);
 
         retranslateUi(mainscene);
 
@@ -112,6 +121,7 @@ public:
         loadGameBtn->setText(QCoreApplication::translate("mainscene", "\345\212\240\350\275\275\346\270\270\346\210\217", nullptr));
         settingBtn->setText(QCoreApplication::translate("mainscene", "\350\256\276\347\275\256", nullptr));
         exitBtn->setText(QCoreApplication::translate("mainscene", "\351\200\200\345\207\272", nullptr));
+        introBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
     } // retranslateUi
 
 };

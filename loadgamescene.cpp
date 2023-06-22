@@ -10,7 +10,7 @@ LoadGameScene::LoadGameScene(QWidget *parent) :
     ui(new Ui::LoadGameScene)
 {
     ui->setupUi(this);
-    this->setWindowTitle("LoadGameScene");
+    this->setWindowTitle("加载游戏");
     gameGraphicScene = new QGraphicsScene;
     ui->gameGraphicsView->setScene(gameGraphicScene);
     ui->timeLabel->setWordWrap(true);
@@ -68,8 +68,13 @@ void LoadGameScene::keyPressEvent(QKeyEvent *event){
 void LoadGameScene::showRenderScene(){
     UserProfile* currentProfile = fm.getUserProfile(USER_ID);
     int maxsize = currentProfile->getRecordList().size()-1;
+    qDebug()<<"recordID:"<<recordId;
+    qDebug()<<"maxsize:"<<maxsize;
     if(recordId>maxsize){
         recordId=maxsize;
+    }
+    if(recordId<0){
+        recordId=0;
     }
     Record currentRecord = currentProfile->getRecordList().at(recordId);
     render(currentRecord.checkerboard);
@@ -77,11 +82,10 @@ void LoadGameScene::showRenderScene(){
     ui->IdLabel->setNum(currentRecord.id);
     ui->timeLabel->setText(currentRecord.time.toString("yyyy-MM-dd hh:mm:ss"));
     ui->scoreLabel->setNum(currentRecord.score);
-    ui->speedLabel->setNum(currentRecord.gameSpeed);
+    ui->speedLabel->setNum(170-currentRecord.gameSpeed);
     ui->userLabel->setText("当前用户："+fm.getUserProfile(USER_ID)->getUserName());
     ui->endLabel->setVisible(currentRecord.isGameOver);
     ui->okBtn->setEnabled(!currentRecord.isGameOver);
-//    qDebug()<<recordId;
 }
 
 void LoadGameScene::render(CheckerBoard checkerboard)

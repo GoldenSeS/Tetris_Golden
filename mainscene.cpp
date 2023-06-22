@@ -14,8 +14,20 @@ mainscene::mainscene(QWidget *parent)
     fm.loadProfilesFromFile(FILEPATH);
     fm.debugProfilesOutput();
 
-    this->setWindowTitle(QString("TetrisMainScene"));
+    this->setWindowTitle(QString("主页面"));
     this->setFixedSize(800,1000);
+
+    ui->introBtn->setIcon(QIcon(":/intro_Iron.png"));
+    ui->introBtn->setIconSize(QSize(60,60));
+
+    connect(ui->introBtn,&QPushButton::clicked,[=](){
+        QMessageBox msgBox;
+        msgBox.setWindowTitle("Introduction");
+        msgBox.setText("俄罗斯方块是一款益智类游戏，最初由俄罗斯工程师Alexey Pajitnov于1984年在苏联开发。\n游戏界面由一个矩形框组成，下落的方块由四个小方块组成，玩家需要旋转和移动方块以使其拼接成完整的行，得分会随着消除的行数增加而逐渐提高。\n开发者：陈金海");
+        msgBox.setFont(QFont("等线", 16));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+    });
 
     //窗口放置在屏幕正中央
     QDesktopWidget *desktop = QApplication::desktop();

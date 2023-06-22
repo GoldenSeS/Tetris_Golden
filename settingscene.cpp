@@ -18,7 +18,7 @@ SettingScene::SettingScene(QWidget *parent) :
     ui(new Ui::SettingScene)
 {
     ui->setupUi(this);
-    this->setWindowTitle(QString("TetrisSettingScene"));
+    this->setWindowTitle(QString("设置"));
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowCloseButtonHint);
     this->setFixedSize(800,1000);
     ui->tabWidget->setCurrentIndex(0);

@@ -21,7 +21,7 @@ GameScene::GameScene(QWidget *parent) :
     // 窗口初始化
     ui->setupUi(this);
     this->setFixedSize(800,1000);
-    this->setWindowTitle("TetrisGameScene");
+    this->setWindowTitle("游戏界面");
     ui->pauseLabel->setVisible(false);
     ui->pauseLabel->setStyleSheet("color: rgba(0, 0, 0, 128);");
     //游戏状态初始化

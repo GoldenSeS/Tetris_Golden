@@ -15,6 +15,8 @@ class mainscene : public QWidget
 
 public:
     mainscene(QWidget *parent = nullptr);
+
+
     ~mainscene();
 
 private:
