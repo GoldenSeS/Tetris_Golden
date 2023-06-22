@@ -30,6 +30,7 @@ public:
     QPushButton *settingBtn;
     QPushButton *exitBtn;
     QToolButton *introBtn;
+    QToolButton *rankBtn;
 
     void setupUi(QWidget *mainscene)
     {
@@ -107,6 +108,10 @@ public:
         font2.setFamily(QString::fromUtf8("Agency FB"));
         font2.setPointSize(16);
         introBtn->setFont(font2);
+        rankBtn = new QToolButton(mainscene);
+        rankBtn->setObjectName(QString::fromUtf8("rankBtn"));
+        rankBtn->setGeometry(QRect(690, 30, 71, 71));
+        rankBtn->setFont(font2);
 
         retranslateUi(mainscene);
 
@@ -122,6 +127,7 @@ public:
         settingBtn->setText(QCoreApplication::translate("mainscene", "\350\256\276\347\275\256", nullptr));
         exitBtn->setText(QCoreApplication::translate("mainscene", "\351\200\200\345\207\272", nullptr));
         introBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
+        rankBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
     } // retranslateUi
 
 };

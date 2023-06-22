@@ -5,6 +5,7 @@
 #include "gamescene.h"
 #include "settingscene.h"
 #include "loadgamescene.h"
+#include "rankingsscene.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class mainscene; }
 QT_END_NAMESPACE
@@ -25,6 +26,6 @@ private:
     LoadGameScene *loadScenePtr = nullptr;
     GameScene *gameScenePtr = nullptr;
     SettingScene *settingScenePtr = nullptr;
-
+    RankingsScene *rankingsScenePtr = nullptr;
 };
 #endif // MAINSCENE_H

@@ -40,6 +40,7 @@ public:
     QVector<Record> getRecordList() const;
     void clearRecordList();
     void deleteRecord(int index);
+    int getProfilePTT() const;
 private:
     int user_id;
     QString user_name;

@@ -1,5 +1,6 @@
 #include "userprofile.h"
-
+#include <algorithm>
+#include <QDebug>
 UserProfile::UserProfile(int id, QString name)
 {
     user_id = id;
@@ -63,6 +64,18 @@ void UserProfile::addRecord(int id, QDateTime time, CheckerBoard checkerboard,in
     record.score = score;
     record.isGameOver = isGameOver;
     recordList.push_back(record);
+}
+
+int UserProfile::getProfilePTT() const{
+    int count = 0;
+    int PTT=0;
+    for (auto it = recordList.rbegin(); it != recordList.rend() && count < 30; ++it, ++count) {
+        auto ckarr = it->checkerboard.getCheckerBoardArray();
+        int height = ckarr.size();
+        int width = ckarr[0].size();
+        PTT+=(it->score+100)*(170-it->gameSpeed)*width*width/height;
+    }
+    return PTT;
 }
 
 void UserProfile::setRecordList(QVector<Record> recordList)

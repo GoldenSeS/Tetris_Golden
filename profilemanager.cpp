@@ -206,5 +206,5 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
         }
     }
     qDebug() << "读取文件成功";
-
 }
+

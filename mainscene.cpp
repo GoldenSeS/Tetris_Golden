@@ -20,6 +20,9 @@ mainscene::mainscene(QWidget *parent)
     ui->introBtn->setIcon(QIcon(":/intro_Iron.png"));
     ui->introBtn->setIconSize(QSize(60,60));
 
+    ui->rankBtn->setIcon(QIcon(":/rank_Iron.png"));
+    ui->rankBtn->setIconSize(QSize(60,60));
+
     connect(ui->introBtn,&QPushButton::clicked,[=](){
         QMessageBox msgBox;
         msgBox.setWindowTitle("Introduction");
@@ -28,6 +31,8 @@ mainscene::mainscene(QWidget *parent)
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
     });
+
+
 
     //窗口放置在屏幕正中央
     QDesktopWidget *desktop = QApplication::desktop();
@@ -41,6 +46,17 @@ mainscene::mainscene(QWidget *parent)
 
     //读档场景指针
     loadScenePtr = new LoadGameScene;
+
+    //排行榜场景指针
+    rankingsScenePtr = new RankingsScene;
+
+    connect(ui->rankBtn,&QPushButton::clicked,[=](){
+        qDebug()<<"主场景点击排行榜";
+        rankingsScenePtr->move(this->pos());
+        rankingsScenePtr->updateRankings();
+        rankingsScenePtr->show();
+        this->hide();
+    });
 
     connect(ui->startGameBtn,&QPushButton::clicked,this,[=](){
         qDebug()<<"主场景点击开始游戏";
@@ -88,6 +104,14 @@ mainscene::mainscene(QWidget *parent)
         gameScenePtr->hide();
         this->show();
     });
+
+    connect(rankingsScenePtr,&RankingsScene::rankingSceneBack,this,[=](){
+        qDebug()<<"排行榜点击返回按钮";
+        this->move(rankingsScenePtr->pos());
+        rankingsScenePtr->hide();
+        this->show();
+    });
+
     connect(settingScenePtr,&SettingScene::settingSceneBack,this,[=](){
         qDebug()<<"设置场景点击返回按钮";
         this->move(settingScenePtr->pos());

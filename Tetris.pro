@@ -35,6 +35,7 @@ SOURCES += \
     mainscene.cpp \
     optionblock.cpp \
     profilemanager.cpp \
+    rankingsscene.cpp \
     settingscene.cpp \
     userprofile.cpp
 
@@ -57,6 +58,7 @@ HEADERS += \
     mainscene.h \
     optionblock.h \
     profilemanager.h \
+    rankingsscene.h \
     settingscene.h \
     userprofile.h
 
@@ -67,6 +69,7 @@ FORMS += \
     loadgamescene.ui \
     mainscene.ui \
     optionblock.ui \
+    rankingsscene.ui \
     settingscene.ui
 
 # Default rules for deployment.

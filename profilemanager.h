@@ -20,6 +20,7 @@ public:
     int getProfilesNum() const;
     void debugProfilesOutput();
     void clearProfiles();
+
 private:
     QMap<int, UserProfile*> userProfiles;
 };
