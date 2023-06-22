@@ -25,6 +25,8 @@ public:
     void move_right();
     //获取当前颜色
     int get_color();
+    //x坐标移动
+    void moveX(int x);
 protected:
     QPoint block_pos;
     int block_color;

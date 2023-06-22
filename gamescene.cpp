@@ -88,7 +88,9 @@ GameScene::GameScene(QWidget *parent) :
             game_width=ckbArray[0].size();
             checkerboard.setCheckerBoardArray(ckb.getFixedBlockCheckerBoardArray());
             present_block = *blocklist[temrecord.present_block-1];
+            present_block.moveX(game_width/2);
             next_block = *blocklist[temrecord.next_block-1];
+            next_block.moveX(game_width/2);
             restartGameRecordId=-1;
         }else{
             gm.gameRestart(checkerboard,present_block,next_block,blocklist);
@@ -120,7 +122,7 @@ GameScene::GameScene(QWidget *parent) :
         gm.gameRestart(checkerboard,present_block,next_block,blocklist);
         checkerboard.clearCheckerBoard();
         nextBlkGraphicScene->clear();
-        render();
+        gameGraphicScene->clear();
         emit gameSceneBack();
     });
     //初始化方块

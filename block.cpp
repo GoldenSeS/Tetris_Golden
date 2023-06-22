@@ -7,6 +7,10 @@ Block::Block()
     block_status=0;
 }
 
+void Block::moveX(int x){
+    block_pos.setX(x/2);
+}
+
 void Block::status_forward()
 {
     if(this->get_status()<3)
