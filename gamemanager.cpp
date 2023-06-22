@@ -20,7 +20,7 @@ bool GameManager::canMoveDown(const CheckerBoard &board,const Block &present_blk
 {
     QVector<QPoint>all_pos = present_blk.get_all_block_pos();
     for(auto pos:all_pos){
-        if(pos.y()+1==GAME_HEIGHT){
+        if(pos.y()+1==board.getCheckerBoardArray().size()){
             return false;
         }
         if(board.getCheckerBoardArray()[pos.y()+1][pos.x()]==9){
@@ -48,7 +48,7 @@ bool GameManager::canMoveRight(const CheckerBoard &board,const Block &present_bl
 {
     QVector<QPoint>all_pos = present_blk.get_all_block_pos();
     for(auto pos:all_pos){
-        if(pos.x()+1==GAME_WIDTH){
+        if(pos.x()+1==board.getCheckerBoardArray()[0].size()){
             return false;
         }
         if(board.getCheckerBoardArray()[pos.y()][pos.x()+1]==9){
@@ -64,7 +64,7 @@ bool GameManager::canRolate(const CheckerBoard &board,const Block &present_blk) 
     ghostBlock.status_forward();
     QVector<QPoint>all_pos = ghostBlock.get_all_block_pos();
     for(auto pos:all_pos){
-        if(pos.x()==GAME_WIDTH||pos.x()+1==0||pos.y()+1==GAME_HEIGHT){
+        if(pos.x()==board.getCheckerBoardArray()[0].size()||pos.x()+1==0||pos.y()+1==board.getCheckerBoardArray().size()){
             return false;
         }
         if(board.getCheckerBoardArray()[pos.y()][pos.x()]==9){
@@ -77,9 +77,9 @@ bool GameManager::canRolate(const CheckerBoard &board,const Block &present_blk) 
 QList<int> GameManager::canLineElimination(const CheckerBoard &board) const
 {
     QList<int> res;
-    for(int i=0;i<GAME_HEIGHT;i++){
+    for(int i=0;i<board.getCheckerBoardArray().size();i++){
         bool canElimination=1;
-        for(int j=0;j<GAME_WIDTH;j++){
+        for(int j=0;j<board.getCheckerBoardArray()[0].size();j++){
             if(board.getCheckerBoardArray()[i][j]!=9){
                 canElimination=0;
                 break;

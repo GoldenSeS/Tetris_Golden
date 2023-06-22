@@ -80,6 +80,7 @@ void LoadGameScene::showRenderScene(){
     ui->speedLabel->setNum(currentRecord.gameSpeed);
     ui->userLabel->setText("当前用户："+fm.getUserProfile(USER_ID)->getUserName());
     ui->endLabel->setVisible(currentRecord.isGameOver);
+    ui->okBtn->setEnabled(!currentRecord.isGameOver);
 //    qDebug()<<recordId;
 }
 

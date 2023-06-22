@@ -98,9 +98,9 @@ void ProfileManager::saveProfilesToFile(const QString& fileName) const {
             //棋盘数据
             QJsonArray checkerboardArray;
             QVector<QVector<int>> checkerboard = record.checkerboard.getCheckerBoardArray();
-            for (int i = 0; i < GAME_HEIGHT; i++) {
+            for (int i = 0; i < checkerboard.size(); i++) {
                 QJsonArray lineArray;
-                for (int j = 0; j < GAME_WIDTH; j++) {
+                for (int j = 0; j < checkerboard[0].size(); j++) {
                     lineArray.append(checkerboard.at(i).at(j));
                 }
                 checkerboardArray.append(lineArray);
@@ -205,7 +205,6 @@ void ProfileManager::loadProfilesFromFile(const QString& fileName) {
             profile->addRecord(record);
         }
     }
-
     qDebug() << "读取文件成功";
 
 }

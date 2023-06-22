@@ -25,7 +25,7 @@ void CheckerBoard::CheckerBoard::setBlock(Block block)
 {
     QVector<QPoint>all_pos = block.get_all_block_pos();
     for(auto pos:all_pos){
-        if(pos.y()>=0&&pos.y()<GAME_HEIGHT&&pos.x()>=0&&pos.x()<GAME_WIDTH)
+        if(pos.y()>=0&&pos.y()<CheckerBoardArray.size()&&pos.x()>=0&&pos.x()<CheckerBoardArray[0].size())
         this->CheckerBoardArray[pos.y()][pos.x()]=block.get_color();
     }
 }
@@ -34,14 +34,14 @@ void CheckerBoard::setFixedBlock(Block block)
 {
     QVector<QPoint>all_pos = block.get_all_block_pos();
     for(auto pos:all_pos){
-        if(pos.y()>=0&&pos.y()<GAME_HEIGHT&&pos.x()>=0&&pos.x()<GAME_WIDTH)
+        if(pos.y()>=0&&pos.y()<CheckerBoardArray.size()&&pos.x()>=0&&pos.x()<CheckerBoardArray[0].size())
         this->CheckerBoardArray[pos.y()][pos.x()]=9;//9代表固定块
     }
 }
 
 void CheckerBoard::clearMovingBlock(){
-    for(int i=0;i<GAME_HEIGHT;i++){
-        for(int j=0;j<GAME_WIDTH;j++){
+    for(int i=0;i<CheckerBoardArray.size();i++){
+        for(int j=0;j<CheckerBoardArray[0].size();j++){
             if(CheckerBoardArray[i][j]!=9){
                 CheckerBoardArray[i][j]=0;
             }
@@ -61,18 +61,18 @@ QVector<QVector<int>> CheckerBoard::getFixedBlockCheckerBoardArray(){
 }
 
 int CheckerBoard::getHighestFixedBlock() const{
-    for(int i=0;i<GAME_HEIGHT;i++){
-        for(int j=0;j<GAME_WIDTH;j++){
+    for(int i=0;i<CheckerBoardArray.size();i++){
+        for(int j=0;j<CheckerBoardArray[0].size();j++){
             if(CheckerBoardArray[i][j]==9){
                 return i;
             }
         }
     }
-    return GAME_HEIGHT;
+    return CheckerBoardArray.size();
 }
 
 void CheckerBoard::clearCheckerBoard(){
-    CheckerBoardArray = QVector<QVector<int>>(GAME_WIDTH,QVector<int>(GAME_HEIGHT,0));
+    CheckerBoardArray = QVector<QVector<int>>(CheckerBoardArray[0].size(),QVector<int>(CheckerBoardArray.size(),0));
     init();
 }
 
