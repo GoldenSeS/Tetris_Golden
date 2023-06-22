@@ -17,6 +17,8 @@ public:
     explicit LoadGameScene(QWidget *parent = nullptr);
     ~LoadGameScene();
     void showRenderScene();
+    //改变色调
+    void changePal();
 private:
     void leftSelect();
     void rightSelect();
@@ -28,6 +30,7 @@ private:
     QGraphicsScene* gameGraphicScene;
     QGraphicsView* gameView;
     void render(CheckerBoard checkerboard);
+    int pal;
 signals:
     void loadSceneBack();
     void okSelectSignal(int recordId);

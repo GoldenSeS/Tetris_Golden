@@ -31,6 +31,7 @@ public:
     QPushButton *exitBtn;
     QToolButton *introBtn;
     QToolButton *rankBtn;
+    QToolButton *moonBtn;
 
     void setupUi(QWidget *mainscene)
     {
@@ -112,6 +113,10 @@ public:
         rankBtn->setObjectName(QString::fromUtf8("rankBtn"));
         rankBtn->setGeometry(QRect(690, 30, 71, 71));
         rankBtn->setFont(font2);
+        moonBtn = new QToolButton(mainscene);
+        moonBtn->setObjectName(QString::fromUtf8("moonBtn"));
+        moonBtn->setGeometry(QRect(690, 900, 71, 71));
+        moonBtn->setFont(font2);
 
         retranslateUi(mainscene);
 
@@ -128,6 +133,7 @@ public:
         exitBtn->setText(QCoreApplication::translate("mainscene", "\351\200\200\345\207\272", nullptr));
         introBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
         rankBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
+        moonBtn->setText(QCoreApplication::translate("mainscene", "...", nullptr));
     } // retranslateUi
 
 };

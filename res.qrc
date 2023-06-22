@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>intro_Iron.png</file>
-        <file>rank_Iron.png</file>
+        <file>moon_Icon.png</file>
+        <file>intro_Icon.png</file>
+        <file>rank_Icon.png</file>
     </qresource>
 </RCC>

@@ -58,6 +58,7 @@ public:
     QLabel *timeLabel_4;
     QPushButton *backBtn;
     QLabel *ss;
+    QLabel *noRecordLabel;
 
     void setupUi(QWidget *RankingsScene)
     {
@@ -334,6 +335,17 @@ public:
         ss->setSizePolicy(sizePolicy1);
         ss->setFont(font1);
         ss->setAlignment(Qt::AlignCenter);
+        noRecordLabel = new QLabel(RankingsScene);
+        noRecordLabel->setObjectName(QString::fromUtf8("noRecordLabel"));
+        noRecordLabel->setGeometry(QRect(249, 400, 300, 108));
+        sizePolicy1.setHeightForWidth(noRecordLabel->sizePolicy().hasHeightForWidth());
+        noRecordLabel->setSizePolicy(sizePolicy1);
+        noRecordLabel->setMinimumSize(QSize(300, 0));
+        QFont font5;
+        font5.setFamily(QString::fromUtf8("\347\255\211\347\272\277"));
+        font5.setPointSize(36);
+        noRecordLabel->setFont(font5);
+        noRecordLabel->setAlignment(Qt::AlignCenter);
 
         retranslateUi(RankingsScene);
 
@@ -361,6 +373,7 @@ public:
         timeLabel_4->setText(QCoreApplication::translate("RankingsScene", "time", nullptr));
         backBtn->setText(QCoreApplication::translate("RankingsScene", "\350\277\224\345\233\236", nullptr));
         ss->setText(QCoreApplication::translate("RankingsScene", "\346\216\222\350\241\214\346\246\234", nullptr));
+        noRecordLabel->setText(QCoreApplication::translate("RankingsScene", "\346\232\202\346\227\240\350\256\260\345\275\225", nullptr));
     } // retranslateUi
 
 };

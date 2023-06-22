@@ -16,12 +16,14 @@ class mainscene : public QWidget
 
 public:
     mainscene(QWidget *parent = nullptr);
-
-
     ~mainscene();
 
 private:
     Ui::mainscene *ui;
+
+    int moonDayShift;
+
+    void updatePaletteColor(QWidget* widget, const QPalette& pal);
 
     LoadGameScene *loadScenePtr = nullptr;
     GameScene *gameScenePtr = nullptr;

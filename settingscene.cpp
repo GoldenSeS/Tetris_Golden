@@ -100,6 +100,7 @@ SettingScene::SettingScene(QWidget *parent) :
 
     init();
     setNumFromDatabase();
+
 }
 
 void SettingScene::init(){

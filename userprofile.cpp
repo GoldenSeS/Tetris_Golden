@@ -75,7 +75,7 @@ int UserProfile::getProfilePTT() const{
         int width = ckarr[0].size();
         PTT+=(it->score+100)*(170-it->gameSpeed)*width*width/height;
     }
-    return PTT;
+    return PTT/1000;
 }
 
 void UserProfile::setRecordList(QVector<Record> recordList)

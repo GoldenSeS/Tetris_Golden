@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QDesktopWidget>
 #include <QMessageBox>
+#include <QApplication>
 mainscene::mainscene(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::mainscene)
@@ -13,15 +14,19 @@ mainscene::mainscene(QWidget *parent)
 
     fm.loadProfilesFromFile(FILEPATH);
     fm.debugProfilesOutput();
+    moonDayShift=1;
 
     this->setWindowTitle(QString("主页面"));
     this->setFixedSize(800,1000);
 
-    ui->introBtn->setIcon(QIcon(":/intro_Iron.png"));
+    ui->introBtn->setIcon(QIcon(":/intro_Icon.png"));
     ui->introBtn->setIconSize(QSize(60,60));
 
-    ui->rankBtn->setIcon(QIcon(":/rank_Iron.png"));
+    ui->rankBtn->setIcon(QIcon(":/rank_Icon.png"));
     ui->rankBtn->setIconSize(QSize(60,60));
+
+    ui->moonBtn->setIcon(QIcon(":/moon_Icon.png"));
+    ui->moonBtn->setIconSize(QSize(60,60));
 
     connect(ui->introBtn,&QPushButton::clicked,[=](){
         QMessageBox msgBox;
@@ -31,8 +36,6 @@ mainscene::mainscene(QWidget *parent)
         msgBox.setStandardButtons(QMessageBox::Ok);
         msgBox.exec();
     });
-
-
 
     //窗口放置在屏幕正中央
     QDesktopWidget *desktop = QApplication::desktop();
@@ -49,6 +52,27 @@ mainscene::mainscene(QWidget *parent)
 
     //排行榜场景指针
     rankingsScenePtr = new RankingsScene;
+
+    QPalette defpalette = this->palette();
+    connect(ui->moonBtn,&QPushButton::clicked,[=](){
+        QPalette palette = this->palette();
+        if(moonDayShift==1){
+            palette.setColor(QPalette::Window, QColor("#2E2F30"));
+            palette.setColor(QPalette::WindowText, Qt::white);
+            updatePaletteColor(this,palette);
+            updatePaletteColor(gameScenePtr,palette);
+            updatePaletteColor(loadScenePtr,palette);
+            updatePaletteColor(rankingsScenePtr,palette);
+        }else {
+            updatePaletteColor(this,defpalette);
+            updatePaletteColor(gameScenePtr,defpalette);
+            updatePaletteColor(loadScenePtr,defpalette);
+            updatePaletteColor(rankingsScenePtr,defpalette);
+        }
+        gameScenePtr->changePal();
+        loadScenePtr->changePal();
+        moonDayShift*=-1;
+    });
 
     connect(ui->rankBtn,&QPushButton::clicked,[=](){
         qDebug()<<"主场景点击排行榜";
@@ -124,6 +148,22 @@ mainscene::mainscene(QWidget *parent)
         loadScenePtr->hide();
         this->show();
     });
+}
+
+void mainscene::updatePaletteColor(QWidget* widget, const QPalette& pal)
+{
+    widget->setPalette(pal);
+
+    // 递归遍历所有子控件
+    const QObjectList& childObjects = widget->children();
+    for (QObject* object : childObjects)
+    {
+        QWidget* childWidget = qobject_cast<QWidget*>(object);
+        if (childWidget)
+        {
+            updatePaletteColor(childWidget, pal);
+        }
+    }
 }
 
 mainscene::~mainscene()

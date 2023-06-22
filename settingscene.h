@@ -17,7 +17,6 @@ class SettingScene : public QWidget
 public:
     explicit SettingScene(QWidget *parent = nullptr);
     ~SettingScene();
-
 private:
     Ui::SettingScene *ui;
     void init();

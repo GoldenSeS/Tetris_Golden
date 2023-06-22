@@ -24,10 +24,12 @@ GameScene::GameScene(QWidget *parent) :
     this->setWindowTitle("游戏界面");
     ui->pauseLabel->setVisible(false);
     ui->pauseLabel->setStyleSheet("color: rgba(0, 0, 0, 128);");
+
     //游戏状态初始化
     isStart=-1;
     isGameOver=true;
     restartGameRecordId = -1;
+    pal = 1;
     //分数初始化
     score = 0;
     //随机数模块初始化
@@ -129,6 +131,21 @@ GameScene::GameScene(QWidget *parent) :
     present_block = *gm.get_random_block(blocklist);
     next_block = *gm.get_random_block(blocklist);
 
+}
+
+void GameScene::changePal(){
+    if(pal==1){
+        ui->gameGraphicsView->setStyleSheet("background-color: rgb(64, 66, 68);");
+        ui->nextBlockGraphicsView->setStyleSheet("background-color: rgb(64, 66, 68);");
+        blockcolor[0]=QColor(64, 66, 68);
+        blockcolor[9]=Qt::lightGray;
+    }else{
+        ui->gameGraphicsView->setStyleSheet("background-color: white");
+        ui->nextBlockGraphicsView->setStyleSheet("background-color: white");
+        blockcolor[0]=Qt::white;
+        blockcolor[9]=Qt::gray;
+    }
+    pal*=-1;
 }
 
 void GameScene::setRestartGameRecordId(int id){
@@ -313,7 +330,11 @@ void GameScene::render()
         for (int col = 0; col < game_width; ++col) {
             // 创建方块项
             QGraphicsRectItem* blockItem = new QGraphicsRectItem;
-
+            if(pal==-1){
+                blockItem->setPen(QPen(Qt::white));
+            }else{
+                blockItem->setPen(QPen(Qt::black));
+            }
 
             // 设置方块项的位置和尺寸
             int x = col * (blockSize + spacing);
@@ -354,6 +375,12 @@ void GameScene::nextBlk_render(){
         for (int col = 0; col < 5; ++col) {
             // 创建方块项
             QGraphicsRectItem* blockItem = new QGraphicsRectItem;
+
+            if(pal==-1){
+                blockItem->setPen(QPen(Qt::white));
+            }else{
+                blockItem->setPen(QPen(Qt::black));
+            }
 
             // 设置方块项的位置和尺寸
             int x = col * (blockSize + spacing);

@@ -19,17 +19,30 @@ RankingsScene::RankingsScene(QWidget *parent) :
 }
 
 void RankingsScene::updateRankings(){
-
+    ui->rankwidget->setVisible(false);
     ui->rankwidget_2->setVisible(false);
     ui->rankwidget_3->setVisible(false);
     ui->rankwidget_4->setVisible(false);
 
     QVector<rankData> rankDataList = getRankDataList();
     int num = rankDataList.size();
+
+    ui->noRecordLabel->setVisible(false);
+    if(rankDataList.empty()){
+        ui->noRecordLabel->setVisible(true);
+        return;
+    }
+
     rankData data = rankDataList.at(0);
-    ui->nameLabel->setText(data.name);
-    ui->scoreLabel->setNum(data.score);
-    ui->timeLabel->setText(data.time);
+
+    if(num>=1){
+        ui->rankwidget->setVisible(true);
+        data = rankDataList.at(0);
+        ui->nameLabel->setText(data.name);
+        ui->scoreLabel->setNum(data.score);
+        ui->timeLabel->setText(data.time);
+    }
+
     if(num>=2){
         ui->rankwidget_2->setVisible(true);
         data = rankDataList.at(1);
@@ -68,7 +81,7 @@ QVector<rankData> RankingsScene::getRankDataList(){
         rankData temrank;
         temrank.score=profile->getProfilePTT();
         temrank.name=profile->getUserName();
-        temrank.time=profile->getRecordList().rbegin()->time.toString("yyyy-mm-dd");
+        temrank.time=profile->getRecordList().rbegin()->time.toString("yyyy-MM-dd");
         tem.append(temrank);
     }
     return tem;

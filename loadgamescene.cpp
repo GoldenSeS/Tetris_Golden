@@ -9,6 +9,7 @@ LoadGameScene::LoadGameScene(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::LoadGameScene)
 {
+    pal=1;
     ui->setupUi(this);
     this->setWindowTitle("加载游戏");
     gameGraphicScene = new QGraphicsScene;
@@ -104,6 +105,11 @@ void LoadGameScene::render(CheckerBoard checkerboard)
             // 创建方块项
             QGraphicsRectItem* blockItem = new QGraphicsRectItem;
 
+            if(pal==-1){
+                blockItem->setPen(QPen(Qt::white));
+            }else{
+                blockItem->setPen(QPen(Qt::black));
+            }
 
             // 设置方块项的位置和尺寸
             int x = col * (blockSize + spacing);
@@ -131,6 +137,15 @@ void LoadGameScene::render(CheckerBoard checkerboard)
     linePen.setWidth(3);
     redLineItem->setPen(linePen);
     gameGraphicScene->addItem(redLineItem);
+}
+
+void LoadGameScene::changePal(){
+    if(pal==1){
+        ui->gameGraphicsView->setStyleSheet("background-color: rgb(64, 66, 68);");
+    }else{
+        ui->gameGraphicsView->setStyleSheet("background-color: white");
+    }
+    pal*=-1;
 }
 
 LoadGameScene::~LoadGameScene()

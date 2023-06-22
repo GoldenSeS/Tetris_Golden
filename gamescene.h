@@ -32,6 +32,8 @@ public:
     void singleStepHandle();
     //设置当前游戏id
     void setRestartGameRecordId(int id);
+    //改变色调
+    void changePal();
 private:
     Ui::GameScene *ui;
 
@@ -67,6 +69,9 @@ private:
     int game_width;
     int game_height;
     int game_speed;
+
+    //色调参数
+    int pal;
 
     //判断游戏当前是否结束
     bool isGameOver;
