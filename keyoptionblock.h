@@ -28,10 +28,10 @@ private:
 
     Qt::Key m_key;
 
-
     bool listeningEnabled; // 标识是否正在监听键盘事件
 signals:
     void disableMouseControl();
+
     void enableMouseControl();
 };
 

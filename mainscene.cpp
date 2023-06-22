@@ -50,17 +50,26 @@ mainscene::mainscene(QWidget *parent)
             QMessageBox::critical(this,"错误","存档为空");
             return;
         }
-        emit enterLoadGameScene();
+        loadScenePtr->grabKeyboard();
         loadScenePtr->move(this->pos());
         loadScenePtr->showRenderScene();
         loadScenePtr->show();
         this->hide();
     });
 
+    connect(loadScenePtr,&LoadGameScene::okSelectSignal,[=](int id){
+        qDebug()<<"选择存档场景点击加载游戏";
+        loadScenePtr->hide();
+        gameScenePtr->move(loadScenePtr->pos());
+        gameScenePtr->show();
+        gameScenePtr->setRestartGameRecordId(id);
+    });
+
     connect(ui->exitBtn,&QPushButton::clicked,this,[=](){
         qDebug()<<"主场景点击退出游戏";
         this->close();
     });
+
     connect(gameScenePtr,&GameScene::gameSceneBack,this,[=](){
         qDebug()<<"游戏场景点击返回按钮";
         this->move(gameScenePtr->pos());
@@ -79,7 +88,6 @@ mainscene::mainscene(QWidget *parent)
         loadScenePtr->hide();
         this->show();
     });
-
 }
 
 mainscene::~mainscene()

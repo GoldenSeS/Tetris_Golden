@@ -21,18 +21,48 @@ LoadGameScene::LoadGameScene(QWidget *parent) :
     });
 
     connect(ui->leftBtn,&QPushButton::clicked,this,[=](){
-        if(recordId>0){
-            recordId--;
-        }
-        showRenderScene();
+        leftSelect();
     });
 
     connect(ui->rightBtn,&QPushButton::clicked,this,[=](){
-        if(recordId<fm.getUserProfile(USER_ID)->getRecordList().size()-1){
-            recordId++;
-        }
-        showRenderScene();
+        rightSelect();
     });
+
+    connect(ui->okBtn,&QPushButton::clicked,this,[=](){
+        okSelect();
+    });
+}
+
+void LoadGameScene::leftSelect(){
+    if(recordId>0){
+        recordId--;
+    }
+    showRenderScene();
+}
+void LoadGameScene::rightSelect(){
+    if(recordId<fm.getUserProfile(USER_ID)->getRecordList().size()-1){
+        recordId++;
+    }
+    showRenderScene();
+}
+void LoadGameScene::okSelect(){
+    qDebug()<<"存档已选定";
+    emit okSelectSignal(recordId);
+}
+void LoadGameScene::keyPressEvent(QKeyEvent *event){
+    if (event->key() == KEYSETTING[0])
+    {
+        leftSelect();
+    }
+    else if (event->key() == KEYSETTING[1])
+    {
+        rightSelect();
+    }
+    else if (event->key() == Qt::Key_Return)
+    {
+        okSelect();
+    }
+    QWidget::keyPressEvent(event);
 }
 
 void LoadGameScene::showRenderScene(){

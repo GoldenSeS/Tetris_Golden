@@ -14,17 +14,14 @@ class optionBlock : public QWidget
 public:
     explicit optionBlock(QWidget *parent = nullptr);
     ~optionBlock();
-
     //设置标签
     void setText(QString str);
     //获取标签
     QString getText();
     //设置上下限
     void setlimit(int upper,int lower);
-
     //设置点击和左右键的步进值
     void setstep(int num);
-
     //设置数字
     void setNum(int num);
     //获取数字

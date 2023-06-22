@@ -18,6 +18,11 @@ public:
     ~LoadGameScene();
     void showRenderScene();
 private:
+    void leftSelect();
+    void rightSelect();
+    void okSelect();
+    void keyPressEvent(QKeyEvent *event)override;
+
     Ui::LoadGameScene *ui;
     int recordId;
     QGraphicsScene* gameGraphicScene;
@@ -25,6 +30,7 @@ private:
     void render(CheckerBoard checkerboard);
 signals:
     void loadSceneBack();
+    void okSelectSignal(int recordId);
 };
 
 #endif // LOADGAMESCENE_H

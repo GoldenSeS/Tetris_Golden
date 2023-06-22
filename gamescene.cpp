@@ -27,6 +27,7 @@ GameScene::GameScene(QWidget *parent) :
     //游戏状态初始化
     isStart=-1;
     isGameOver=true;
+    restartGameRecordId = -1;
     //分数初始化
     score = 0;
     //随机数模块初始化
@@ -59,6 +60,7 @@ GameScene::GameScene(QWidget *parent) :
     nextBlkView->setScene(nextBlkGraphicScene);
 
     blockInit();
+
     // 设置重启按钮
     connect(ui->restart_btn,&QPushButton::clicked,this,[=](){
         this->grabKeyboard();
@@ -77,8 +79,21 @@ GameScene::GameScene(QWidget *parent) :
         ui->scoreLCD->display(0);
         qDebug()<<"游戏界面点击重启按钮";
         ui->pauseLabel->setVisible(false);
-        gm.gameRestart(checkerboard,present_block,next_block,blocklist);
-        checkerboard.setBlock(present_block);
+
+        if(restartGameRecordId!=-1){
+            Record temrecord = fm.getUserProfile(USER_ID)->getRecordList().at(restartGameRecordId);
+            CheckerBoard ckb=temrecord.checkerboard;
+            auto ckbArray=ckb.getCheckerBoardArray();
+            game_height=ckbArray.size();
+            game_width=ckbArray[0].size();
+            checkerboard.setCheckerBoardArray(ckb.getFixedBlockCheckerBoardArray());
+            present_block = *blocklist[temrecord.present_block-1];
+            next_block = *blocklist[temrecord.next_block-1];
+            restartGameRecordId=-1;
+        }else{
+            gm.gameRestart(checkerboard,present_block,next_block,blocklist);
+            checkerboard.setBlock(present_block);
+        }
         render();
         nextBlk_render();
     });
@@ -113,6 +128,11 @@ GameScene::GameScene(QWidget *parent) :
     next_block = *gm.get_random_block(blocklist);
 
 }
+
+void GameScene::setRestartGameRecordId(int id){
+    this->restartGameRecordId=id;
+}
+
 Record GameScene::getCurrentRecord(){
     Record tempRecord;
     tempRecord.id=fm.getUserProfile(USER_ID)->getRecordList().size();
@@ -136,7 +156,7 @@ void GameScene::blockInit(){
     BlockT* blockT_ptr = new BlockT;
     BlockS* blockS_ptr = new BlockS;
     BlockZ* blockZ_ptr = new BlockZ;
-    // 方块列表初始化
+    // 方块列表初始化 "L","O","J","I","T","S","Z"
     blocklist.append(blockL_ptr);
     blocklist.append(blockO_ptr);
     blocklist.append(blockJ_ptr);

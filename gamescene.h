@@ -28,10 +28,10 @@ public:
     void render();
     // 渲染下一个块场景
     void nextBlk_render();
-
     // 单步处理
     void singleStepHandle();
-
+    //设置当前游戏id
+    void setRestartGameRecordId(int id);
 private:
     Ui::GameScene *ui;
 
@@ -56,6 +56,8 @@ private:
     void timerEvent(QTimerEvent* event) override;
     int timerId;
     int timerCnt;
+
+    int restartGameRecordId;
 
     //游戏得分
     int score;

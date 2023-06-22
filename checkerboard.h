@@ -39,6 +39,9 @@ public:
     //获取最高固定块的所在行数
     int getHighestFixedBlock() const;
 
+    //获取纯固定块的CheckerBoardArray
+    QVector<QVector<int>> getFixedBlockCheckerBoardArray();
+
     //设置棋盘数组
     void setCheckerBoardArray(QVector<QVector<int>> CheckerBoardArray);
 private:

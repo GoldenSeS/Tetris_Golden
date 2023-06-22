@@ -49,6 +49,17 @@ void CheckerBoard::clearMovingBlock(){
     }
 }
 
+QVector<QVector<int>> CheckerBoard::getFixedBlockCheckerBoardArray(){
+    for(int i=0;i<CheckerBoardArray.size();i++){
+        for(int j=0;j<CheckerBoardArray[0].size();j++){
+            if(CheckerBoardArray[i][j]!=9){
+                CheckerBoardArray[i][j]=0;
+            }
+        }
+    }
+    return CheckerBoardArray;
+}
+
 int CheckerBoard::getHighestFixedBlock() const{
     for(int i=0;i<GAME_HEIGHT;i++){
         for(int j=0;j<GAME_WIDTH;j++){

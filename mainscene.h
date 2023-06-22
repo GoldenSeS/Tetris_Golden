@@ -24,8 +24,5 @@ private:
     GameScene *gameScenePtr = nullptr;
     SettingScene *settingScenePtr = nullptr;
 
-signals:
-    void enterLoadGameScene();
-
 };
 #endif // MAINSCENE_H
